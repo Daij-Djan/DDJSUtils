@@ -3,25 +3,33 @@
 */
 //
 // DDCompass
+// based on http://null-byte.wonderhowto.com/how-to/hack-together-accelerometer-aware-mobile-website-by-accessing-motion-sensors-javascript-0134154/
 //
 function DDCompass() {
     "use strict";
 
     var compass = this;
-    if (window.DeviceOrientationEvent) {
-        window.addEventListener("deviceorientation", function (e) {
-            var deg = (e.alpha);
-            $(compass).trigger('headingChanged', [deg]);
-        }, false);
-        return this;
-    }
-    else {
-        return null;
-    }
+    window.addEventListener("deviceorientation", function (e) {
+         var heading;
+
+         if (event.webkitCompassHeading != undefined) { 
+             heading = (360 - event.webkitCompassHeading);
+         } else if (event.alpha != null) {
+             heading =  (270 - event.alpha) * -1; 
+         } else {
+             heading = null;
+         } 
+        
+         $(compass).trigger('headingChanged', [heading]);
+    }, false);
 }
 
 var _deviceCompass = undefined;
 DDCompass.getDeviceCompass = function() {
+    if (!window.DeviceOrientationEvent) {
+        return null;
+    }
+    
     if(_deviceCompass === undefined) {
         _deviceCompass = new DDCompass();
     }
