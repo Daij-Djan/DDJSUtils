@@ -15,7 +15,7 @@ function DDCompass() {
          if (event.webkitCompassHeading != undefined) { 
              heading = (360 - event.webkitCompassHeading);
          } else if (event.alpha != null) {
-             heading =  (270 - event.alpha) * -1; 
+             heading =  event.alpha; 
          } else {
              heading = null;
          } 
