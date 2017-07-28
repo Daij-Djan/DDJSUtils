@@ -25,6 +25,44 @@ DDMiscHelpers.hashCodeFromString = function(s) {
 };
 
 //
+// DDMiscHelpers.isoDuration
+//
+// the function returns an iso DURATION for a time Str hh:mm (e.g. PT30M for 0:30)
+//
+DDMiscHelpers.isoDuration = function(timeStr) {
+    var comps = timeStr.split(":");
+    var hours = parseInt(comps[0]);
+    var minutes = parseInt(comps[1]);
+
+    if(hours > 0 && minutes > 0) {
+        return "PT"+hours+"H"+minutes+"M";
+    }
+    else if(hours > 0) {
+        return "PT"+hours+"H";
+    }
+    else {
+        return "PT"+minutes+"M";
+    }
+}
+
+//
+// DDMiscHelpers.getParameterByName
+//
+// the function returns an url query parameter by name
+//
+DDMiscHelpers.getParameterByName = function(name, url) {
+   "use strict"
+ 
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
+//
 // DDMiscHelpers.copyInputValuesFromID
 //
 // the function return associative array with inputs' values under the DOM element with the id 'form'
